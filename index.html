@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" class="no-forced-scrollbar">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <title>Jellyfin Vue</title>
+    <meta name="description" content="The Free Software Media System" />
+    <!-- Recreate icons with: https://realfavicongenerator.net/ Copy & rename android* icons to pwa* icons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/jellyfin.webmanifest" />
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
+    <meta name="msapplication-TileColor" content="#2b5797" />
+    <meta name="theme-color" content="#101010" />
+    <style>
+      @keyframes gradient {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      /**
+        * Light color scheme for splashscreen
+        *
+      */
+
+      .light {
+        background: linear-gradient(
+          280deg,
+          #4f5b62,
+          #62727b,
+          #718792,
+          #819ca9,
+          #8eacbb
+        );
+      }
+
+      /**
+        * Dark color scheme for splashscreen
+        *
+      */
+
+      .dark {
+        background: linear-gradient(
+          280deg,
+          #111827,
+          #1c2741,
+          #332d41,
+          #4a2532,
+          #381e73,
+          #244415
+        );
+      }
+
+      @media (prefers-reduced-motion) {
+        .animation {
+          animation: gradient 30s linear infinite;
+        }
+      }
+
+      .splashBackground {
+        position: absolute;
+        padding: 0;
+        margin: 0;
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        background-size: 400% 400%;
+        animation: gradient 2s linear infinite;
+        z-index: 99999999;
+      }
+
+      .splashLogo {
+        width: 30%;
+        height: 30%;
+        /* This file is in the 'public' folder, so it will be placed at the root when the client is built */
+        background-image: url(/icon.png);
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain;
+      }
+
+      /* Class to apply when the load process is finished */
+      .loadFinished {
+        opacity: 0;
+        transition: opacity 0.75s linear;
+      }
+    </style>
+    
+    <script type="module" crossorigin src="/assets/index-338aafc6.js"></script>
+    <link rel="stylesheet" href="/assets/index-e9cb74fe.css">
+  <link rel="manifest" href="/manifest.json"><script id="vite-plugin-pwa:register-sw" src="/registerSW.js"></script></head>
+  <body>
+    <div class="splashBackground">
+      <div class="splashLogo"></div>
+    </div>
+    <div id="app"></div>
+    <!-- Load splashcreen color scheme based on stored settings or user-agent preferences. -->
+    <script>
+      const store = localStorage.getItem('clientSettings') || '{}';
+      const storedMode = JSON.parse(store).darkMode;
+      const matchedDarkColorScheme = window.matchMedia(
+        'prefers-color-scheme: dark'
+      ).matches;
+      const useDarkMode =
+        typeof storedMode === 'boolean' ? storedMode : matchedDarkColorScheme;
+      const classToApply = useDarkMode ? 'dark' : 'light';
+      const element = document.querySelector('.splashBackground');
+
+      if (element) {
+        element.classList.add(classToApply);
+      }
+    </script>
+  </body>
+</html>
